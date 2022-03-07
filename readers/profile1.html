@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Card</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <!-- The background element  -->
+
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Basic strucure of the profile card  -->
+    <div class="wrapper">
+        <!-- Profile image  -->
+        <div class="img-area">
+            <div class="inner-area">
+                <img src="https://1.bp.blogspot.com/-NYPWByswrmg/YSKXi-CZiGI/AAAAAAAACZY/LtLeocLNtrkdb31nrCn6V0mkDRW-jhOUwCNcBGAsYHQ/s16000/img4.jpg" alt="">
+            </div>
+        </div>
+        <!-- Basic information  -->
+        <div class="user-name">Admin </div>
+        <div class="email">admin@gmail.com</div>
+
+        <!-- Edit button  -->
+        <div class="buttons">
+            <button name="edit">Edit</button>
+        </div>
+    </div>
+</body>
+</html>
+Get the error message from the url ...($_GET['error_message']) … Then you echo the $error_message. But you have to check first if it's set using an if statement
+if(isset($_GET['error_message'])) {
+    <?php 
+
+          
+
+          if (isset($_GET['invalid_message'])) {
+            $invalid_message = $_GET['invalid_message'];
+
+            echo "<p class='text-danger'>$invalid_message</p>";
+          }
+          
+          ?>

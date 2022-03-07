@@ -1,0 +1,100 @@
+.edit-page{
+    background-color: #1c2833;
+}
+*:focus{
+    outline: none;
+}
+.editor{
+    box-sizing: border-box;
+    width: 153px;
+    height: 153px;
+    border: 2px solid #ffad06;
+    box-shadow: -3px -3px 7px #ffffff73,
+                3px 3px 5px rgba(94, 104, 121, 0.288);
+    border-radius: 50%;
+    background-color: #10003d;
+    margin-top: 50px;
+    overflow: hidden;
+    transition: all 1s;
+}
+.editor img{
+    box-sizing: border-box;
+    width: 149px;
+    height: 149px;
+    border-radius: 50%;
+    margin: 0;
+    border: 5px solid #ffad06;
+    padding: 3px;
+    background-color: white;
+    transition: all 1s;
+
+}
+.editor input[type="text"],
+.editor input[type="email"],
+.editor input[type="password"]{
+    display: block;
+    box-sizing: border-box;
+    background: none;
+    color: #ffad06;
+    margin-bottom: 30px;
+    padding: 4px;
+    width: 220px;
+    height: 32px;
+    border: none;
+    border-bottom: 1px solid #ffad06;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    font-size: 15px;
+    transition: 0.2s ease;
+}
+.editor input[type="text"]{
+    margin-top: 25px;
+}
+.editor input[type="text"]:focus,
+.editor input[type="email"]:focus,
+.editor input[type="password"]:focus{
+    border-bottom: 2px solid #ffad06;
+    border-bottom-right-radius: 20px;
+    color: #ffad06;
+    transition: 0.2 ease;
+}
+.editor button{
+    border: 1px solid #ffad06;
+    background-color: #10003d;
+    color: white;
+    height: 30px;
+    width: 100px;
+    border-radius: 5px;
+    margin: 0px;
+    transition: all 0.3s;
+}
+.editor button:hover{
+    transform: scale(1.1);
+}
+.editor input[type="file"]{
+    display: none;
+}
+.editor label{
+    box-sizing: border-box;
+    font-size: 20px;
+    background-color: #10003d;
+    color: white;
+    border: 1px solid #ffad06;
+    padding: 2px 15px;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+.editor label:hover{
+    background-color: #ffad06;
+    color: #10003d;
+}
+.editor:hover{
+    width: 360px;
+    height: 500px;
+    border-radius: 5px;
+}
+.editor:hover img{
+    width: 100px;
+    height: 100px;
+    margin: 20px 31%;
+}
