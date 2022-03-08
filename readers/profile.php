@@ -132,10 +132,11 @@ if (!isset($_SESSION['user'])) {
                                 $id=$row['id'];
                                 $email=$row['user_email'];
                                 $pswd=$row['user_password'];
-                                $pictureQuery="select * from Safari_final_project.profile_picture where user_id='$id'";
-                                $resultPic=$connection->query($pictureQuery);
-                                $rowPic=$resultPic->fetch_assoc();
-                                $picture = $rowPic['user_picture'];
+                                $picture= $row['pic'];
+                                // $pictureQuery="select * from Safari_final_project.profile_picture where user_id='$id'";
+                                // $resultPic=$connection->query($pictureQuery);
+                                // $rowPic=$resultPic->fetch_assoc();
+                                // $picture = $rowPic['user_picture'];
                                 ?> 
             
                 <!-- The background element  -->
@@ -152,7 +153,7 @@ if (!isset($_SESSION['user'])) {
                         <div class="inner-area">
                         <?php
                         if ($picture ==NULL){
-                                echo '<img src="./assets/images/101essays.jpg" alt="">';
+                                echo '<img src="./assets/images/profile.jpg" alt="">';
                         }else{
 
                             echo '<img src = "data:image/png;base64,' . base64_encode($picture) . '" width = "50px" height = "50px"/>';
@@ -165,7 +166,6 @@ if (!isset($_SESSION['user'])) {
                     <div class="user-name"><?php echo $username ?> </div>
                     <div class="email"><?php echo $email ?></div>
                     <?php echo $id ?>
-                    <!-- <td><a class='btn btn-primary' href='./update.php?v_id=$voterId&v_name=$voterName&v_id_number=$voterIdNumber&v_county=$voterCounty&v_gender=$voterGender&v_phone_number=$voterPhoneNumber'>Update</a></td> -->
 
 
                     <!-- Edit button  -->

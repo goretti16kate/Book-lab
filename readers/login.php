@@ -13,8 +13,8 @@ if (isset($_SESSION['user'])){
 if (isset($_POST['btn_register'])){
     $regname = $_POST['user'];
     $regemail = $_POST['email'];
-    $password =$_POST['password'];
-    $cpassword =$_POST['cpassword'];
+    $password =md5($_POST['password']);
+    $cpassword =md5($_POST['cpassword']);
 
     if ($password == $cpassword){
         $checkQuery = "SELECT * FROM  `Users` where `user_name` ='$name'";
@@ -22,7 +22,10 @@ if (isset($_POST['btn_register'])){
         $num =mysqli_num_rows($result);
 
         if ($num == 0){
-            $regQuery = "INSERT INTO `Users`(`id`, `user_name`, `user_email`, `user_password`) VALUES (NULL,'$regname','$regemail','$password')";
+            $image =new imagick("./assets/images/profile.jpg");
+            $profile = $image->getImageBlob();
+            $profile= $connection->real_escape_string($profile);
+            $regQuery = "INSERT INTO `Users`(`id`, `user_name`, `user_email`, `user_password`, `pic`) VALUES (NULL,'$regname','$regemail','$password','$profile')";
             $save = mysqli_query($connection, $regQuery);
             if ($save){
                 echo "<script>alert('Registration Complete')</script>";
@@ -45,7 +48,7 @@ if (isset($_POST['btn_register'])){
 if (isset($_POST['btn_login'])){
 
     $name = $_POST['user'];
-    $pass = $_POST['password'];
+    $pass = md5($_POST['password']);
 
     $s = "select * from  Users where user_name ='$name' && user_password = '$pass'";
 
@@ -101,14 +104,9 @@ if (isset($_POST['btn_login'])){
                 <button type="button" class="toggle-btn" onclick="login()">Login</button>
                 <button type="button" class="toggle-btn" onclick="register()">Register</button>
             </div>
-            <!-- <div class="social-icons">
-                <img src="#" alt="fb.png">
-                <img src="#" alt="tw.png">
-                <img src="#" alt="google.png">
-            </div> -->
             <form id="login" action="login.php" method="post" class="input-group">
                 <input name="user"type="text" class="input-field" placeholder="User Name" required>
-                <input name="password" type="text" class="input-field" placeholder="Enter Password" required>
+                <input name="password" type="password" class="input-field" placeholder="Enter Password" required>
                 <input type="checkbox" name="" id="" class="login-check-box"><span class="rem">Remember Password</span>
                 <button name="btn_login" type="submit" class="submit-btn">Login</button>
             </form>
@@ -122,6 +120,7 @@ if (isset($_POST['btn_login'])){
             </form>
         </div>
     </div>
+
 
     <script>
         var x = document.getElementById("login")
