@@ -98,3 +98,19 @@
     height: 100px;
     margin: 20px 31%;
 }
+.picture_form{
+    padding: 20px;
+}
+.picture_form button{
+    border: 1px solid #ffad06;
+    background-color: #10003d;
+    color: white;
+    height: 30px;
+    width: 100px;
+    border-radius: 5px;
+    margin: 0px;
+    transition: all 0.3s;
+}
+.picture_form button:hover{
+    transform: scale(1.1);
+}

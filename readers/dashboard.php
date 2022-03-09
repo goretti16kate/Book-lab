@@ -104,6 +104,12 @@ if (!isset($_SESSION['id'])) {
                                 <span class="text nav-text">Notifications</span>
                             </a>
                         </li> -->
+                        <li class="nav-link" title="Recommend Books">
+                            <a href="./recommend.php">
+                                <i class='bx bx-book-bookmark bx-tada-hover icon'></i>
+                                <span class="text nav-text">Recommend</span>
+                            </a>
+                        </li>
 
                         <li class="nav-link" title="profile">
                             <a href="./profile.php">

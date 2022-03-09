@@ -25,7 +25,7 @@ if (!isset($_SESSION['id'])) {
     <!----===== Boxicons CSS ===== -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="dashboard/style.css">
-    <!-- <link rel="stylesheet" href="./styles.css"> -->
+    <link rel="stylesheet" href="./styles.css">
 
 
 </head>
@@ -64,12 +64,12 @@ if (!isset($_SESSION['id'])) {
                         </form>
                     </li>
                     <ul class="menu-links">
-                        <li class="nav-link" title="dashboard">
+                        <!-- <li class="nav-link" title="dashboard">
                             <a href="dashboard.php">
                                 <i class='bx bx-home-alt bx-tada-hover icon'></i>
                                 <span class="text nav-text">Dashboard</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="nav-link" title="all books">
                             <a href="./dashboard.php">
@@ -144,7 +144,7 @@ if (!isset($_SESSION['id'])) {
                                 $pswd=$row['user_password'];
                                 ?> 
                     <center>
-                    <h2 style="color: var(--text-color);">Edit Your Profile</h2>
+                    <h2 style="color: var(--text-color);">Edit Your Profile Picture</h2>
                     <?php
                         $msg = '';
                         if($_SERVER['REQUEST_METHOD']=='POST'){
@@ -163,20 +163,21 @@ if (!isset($_SESSION['id'])) {
                             $check = mysqli_stmt_affected_rows($stmt);
                             if($check==1){
                                 $msg = 'Profile Successfullly Uploaded';
+                                echo "<meta http-equiv='refresh' content='0;url=profile.php'>";
                             }else{
                                 $msg = 'Error uploading image';
                             }
                             mysqli_close($connection);
                         }
                         ?>
-                        <form action="" method="post" enctype="multipart/form-data">
-                            <input type="file" name="image" />
+                        <form class= "picture_form"action="" method="post" enctype="multipart/form-data">
+                            <input style="color: var(--text-color);"type="file" name="image" accept="image/*"/>
                             <button>Upload</button>
                         </form>
                         <?php
                             echo $msg;
                         ?>
-                    <h2 style="color: var(--text-color);">Edit Your Profile</h2>
+                    <h2 style="color: var(--text-color); ">Edit Your Profile Info</h2>
                 <form class="editor" action= "edit.php?id=<?php echo $id ?>" method= "post" enctype="multipart/form-data">
                 <?php
                 if ($picture ==NULL){
@@ -187,12 +188,6 @@ if (!isset($_SESSION['id'])) {
                 }
 
                 ?> 
-                    <!-- <form action="" method="post" enctype="multipart/form-data"> -->
-<!-- </form> -->
-                    <!-- <input type="file" name="image" id= "file" accept="image/*"> -->
-                    <!-- <button>Upload</button>  -->
-                    
-                    <!-- <label for="file">Upload</label>  -->
                     <input type="text" name="user" placeholder="<?php echo $username ?>">
                     <input type="email" name="new_email" placeholder="<?php echo $email ?>">
                     <input type="hidden" value="<?php echo $id; ?>" name="id">
@@ -207,17 +202,7 @@ if (!isset($_SESSION['id'])) {
                         $updatedusername = $_POST["user"];
                         $updatedemail = $_POST["new_email"];
                         $updatedpassword= md5($_POST["new_pass"]);
-                        // $updatedprofile = $_POST["new_profile"];
                         $userId = $_SESSION['id'];
-                        // $image = $_FILES['image']['tmp_name'];
-                        // $img = file_get_contents($image);
-
-                        
-
-
-
-                        // print_r($_FILES);
-                        //connect to the database to update
 
                         $updateQuery ="UPDATE `Users` SET `user_name`='$updatedusername',`user_email`='$updatedemail'
                         ,`user_password`='$updatedpassword' where id='$userId'";
