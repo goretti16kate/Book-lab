@@ -35,13 +35,13 @@ require('db_connection.php');
         <div class="navbar">
             <ul>
                 <li class="active">
-                    <a href="dashboard.php">
+                    <a href="./dashboard.php">
                         <i class='bx bx-home icon'></i>
                         <i class='bx bxs-home activeIcon'></i>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="./profile.php">
                         <i class='bx bx-user icon'></i>
                         <i class='bx bxs-user activeIcon'></i>
                     </a>
@@ -116,9 +116,7 @@ require('db_connection.php');
                 <div class="book_listing">
                     <div class="content">
                         <h1 class="title"><?php echo $name ?></h1>
-                        <p class="synopsis">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis quisquam
-                            natus
-                            corporis, consequuntur fugit officia molestias sunt perspiciatis nemo obcaecati.</p>
+                        <p class="synopsis"><?php echo $synopsis ?></p>
 
                         <p class="availability"><?php
                                            if ($avail > 0) {
@@ -128,15 +126,8 @@ require('db_connection.php');
                                            } ?>
                                                  	
                                                  </b></p>
-                        <div class="btn_and_rating_box">
-                            <div class="rating">
-                                <img src="./images/" alt="star">
-                                <img src="./images/" alt="star">
-                                <img src="./images/" alt="star">
-                                <img src="./images/" alt="star">
-                                <img src="./images/" alt="star">
-                            </div>
-                            <button class="btn_borrow">Borrow</button>
+                            <a href="./books/rater.php?id=<?php echo $bookid ?>"><button class="btn_borrow" name= "borrow_btn">Borrow</button></a>
+
                         </div>
                     </div>
                 </div>

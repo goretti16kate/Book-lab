@@ -6,7 +6,7 @@ require('db_connection.php');
 
 session_start();
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['id'])) {
     header("location: index.html");
 }
 ?>
@@ -43,11 +43,11 @@ if (!isset($_SESSION['user'])) {
     <div class="container">
     <?php 
 // Get user_name 
-$username = $_SESSION['user'];
-$getUser="select * from Safari_final_project.Users where user_name='$username'";
+$id = $_SESSION['id'];
+$getUser="select * from Safari_final_project.Users where id='$id'";
 $resultUser=$connection->query($getUser);
 $rowUser=$resultUser->fetch_assoc();
-$id=$rowUser['id'];
+$username=$rowUser['user_name'];
 
 $x=$_GET['id'];
 $sql="select * from Safari_final_project.book where BookId='$x'";

@@ -6,7 +6,7 @@ require('db_connection.php');
 
 session_start();
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['id'])) {
     header("location: index.html");
 }
 ?>
@@ -25,7 +25,7 @@ if (!isset($_SESSION['user'])) {
     <!----===== Boxicons CSS ===== -->
     <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="dashboard/style.css">
-    <link rel="stylesheet" href="./styles.css">
+    <!-- <link rel="stylesheet" href="./styles.css"> -->
 
 
 </head>
@@ -35,12 +35,19 @@ if (!isset($_SESSION['user'])) {
             <header>
                 <div class="image-text">
                     <span class="image">
-                        <img src="logo.png" alt="">
+                        <img src="./dashboard/logo.png" alt="">
                     </span>
 
                     <div class="text logo-text">
                         <span class="name">Book-lab</span>
-                        <?php echo " <span>@".$_SESSION['user']."</span>" ?>
+                        <?php 
+                        $sessionId= $_SESSION['id'];
+                        $getUser = "select * from Users where id ='$sessionId'";
+                        $result=$connection->query($getUser);
+                        $row=$result->fetch_assoc();
+                        $username= $row['user_name'];
+                        ?>
+                         <?php echo " <span>@".$username."</span>" ?> 
                     </div>
                 </div>
 
@@ -70,7 +77,7 @@ if (!isset($_SESSION['user'])) {
                                 <span class="text nav-text">All Books</span>
                             </a>
                         </li>
-
+<!-- 
                         <li class="nav-link" title="current books">
                             <a href="#">
                                 <i class='bx bx-book-open bx-tada-hover icon'></i>
@@ -88,7 +95,7 @@ if (!isset($_SESSION['user'])) {
                                 <i class='bx bx-bell bx-tada-hover icon'></i>
                                 <span class="text nav-text">Notifications</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="nav-link" title="profile">
                             <a href="./profile.php">
@@ -124,52 +131,105 @@ if (!isset($_SESSION['user'])) {
         </nav>
 
         <section class="home">
-            <!-- <div class="text">Dashboard</div> -->
-            <!-- <div class="edit-card"> -->
-                <!-- <div class="edit_wrapper"> -->
                 <?php
-                                $username = $_SESSION['user'];
-                                $sql="select * from Safari_final_project.Users where user_name='$username'";
+                                $sessionId = $_SESSION['id'];
+                                $sql="select * from Safari_final_project.Users where id='$sessionId'";
                                 $result=$connection->query($sql);
                                 $row=$result->fetch_assoc();
 
+                                $username=$row['user_name'];
                                 $id=$row['id'];
-                                // $category=$row['Category'];
                                 $email=$row['user_email'];
-                                // $mobno=$row['MobNo'];
+                                $picture=$row['pic'];
                                 $pswd=$row['user_password'];
-                                $pictureQuery="select * from Safari_final_project.profile_picture where user_id='$id'";
-                                $resultPic=$connection->query($pictureQuery);
-                                $rowPic=$resultPic->fetch_assoc();
-                                $picture = $rowPic['user_picture'];
                                 ?> 
                     <center>
                     <h2 style="color: var(--text-color);">Edit Your Profile</h2>
-                <form class="editor" action= "edit.php?id=<?php echo $id ?>" method= "post">
+                    <?php
+                        $msg = '';
+                        if($_SERVER['REQUEST_METHOD']=='POST'){
+                            $image = $_FILES['image']['tmp_name'];
+                            $img = file_get_contents($image);
+                            // $con = mysqli_connect('localhost','root','','Safari_final_project') or die('Unable To connect');
+                            // $sql = "insert into User (pic) values(?)";
+                            $sql= "UPDATE `Users` SET `pic`= ? WHERE id = ?";
+                            // INSERT INTO `image`(`id`, `image`) VALUES ('[value-1]','[value-2]')
+
+                            $stmt = mysqli_prepare($connection,$sql);
+
+                            mysqli_stmt_bind_param($stmt, "si",$img,$id);
+                            mysqli_stmt_execute($stmt);
+
+                            $check = mysqli_stmt_affected_rows($stmt);
+                            if($check==1){
+                                $msg = 'Profile Successfullly Uploaded';
+                            }else{
+                                $msg = 'Error uploading image';
+                            }
+                            mysqli_close($connection);
+                        }
+                        ?>
+                        <form action="" method="post" enctype="multipart/form-data">
+                            <input type="file" name="image" />
+                            <button>Upload</button>
+                        </form>
+                        <?php
+                            echo $msg;
+                        ?>
+                    <h2 style="color: var(--text-color);">Edit Your Profile</h2>
+                <form class="editor" action= "edit.php?id=<?php echo $id ?>" method= "post" enctype="multipart/form-data">
                 <?php
                 if ($picture ==NULL){
-                   echo '<img src="./assets/images/101essays.jpg" alt="">';
+                   echo '<img src="./assets/images/profile.jpg" alt="">';
                 }else{
 
                      echo '<img src = "data:image/png;base64,' . base64_encode($picture) . '" width = "50px" height = "50px"/>';
                 }
 
                 ?> 
-                
-                    <input type="file" name="new_profile" id="file" accept="image/*">
-                    <label for="file">Edit pic</label>
+                    <!-- <form action="" method="post" enctype="multipart/form-data"> -->
+<!-- </form> -->
+                    <!-- <input type="file" name="image" id= "file" accept="image/*"> -->
+                    <!-- <button>Upload</button>  -->
+                    
+                    <!-- <label for="file">Upload</label>  -->
                     <input type="text" name="user" placeholder="<?php echo $username ?>">
                     <input type="email" name="new_email" placeholder="<?php echo $email ?>">
-                    
                     <input type="hidden" value="<?php echo $id; ?>" name="id">
                     <input type="password" name="new_pass" placeholder="new password">
-                    <button style="float: left;margin: 10px 0 0 18.2%;">Cancel</button>
+                    <a href="./profile.php"><button style="float: left;margin: 10px 0 0 18.2%;">Cancel</button></a>
                     <button type="submit" name="edit"style="float: right;margin: 10px 18.2% 0 0 ;">Save Changes</button>
 </form>
                 </center>
                 </div>
                 <?php
                 if (isset($_POST["edit"])){
+                        $updatedusername = $_POST["user"];
+                        $updatedemail = $_POST["new_email"];
+                        $updatedpassword= md5($_POST["new_pass"]);
+                        // $updatedprofile = $_POST["new_profile"];
+                        $userId = $_SESSION['id'];
+                        // $image = $_FILES['image']['tmp_name'];
+                        // $img = file_get_contents($image);
+
+                        
+
+
+
+                        // print_r($_FILES);
+                        //connect to the database to update
+
+                        $updateQuery ="UPDATE `Users` SET `user_name`='$updatedusername',`user_email`='$updatedemail'
+                        ,`user_password`='$updatedpassword' where id='$userId'";
+                    
+                        //use the mysqli_query to execute the update query
+                        $update = mysqli_query($connection, $updateQuery);
+                        if (isset($update)){
+                            // Go back to registered_voters.php to see the changes
+                            echo "<script>Updating Successful</script>";
+                        }else{
+                            die("Updating Failed");
+                        }
                     
                 }
                 ?>
@@ -230,7 +290,7 @@ if (!isset($_SESSION['user'])) {
         </div>
        </a>
 
-        <!-- recent books -->
+        <!-- recent books
         <h4 class="recent-books">Downloaded Books</h4>
         <section class="recents variable slider">
             <div class="shelve">
@@ -249,11 +309,11 @@ if (!isset($_SESSION['user'])) {
                 <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
                     alt="" class="shelve-img">
             </div>
-        </section>
+        </section> -->
         <!-- end recent books -->
 
         <!-- previously borrowed books -->
-        <h4 class="recent-books">Previously Borrowed Books</h4>
+        <!-- <h4 class="recent-books">Previously Borrowed Books</h4>
         <section class="recents variable slider">
             <div class="shelve">
                 <img src="https://images.unsplash.com/photo-1558901357-ca41e027e43a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
@@ -272,10 +332,10 @@ if (!isset($_SESSION['user'])) {
                     alt="" class="shelve-img">
             </div>
         </section>
-        <!-- end recent books -->
+         end recent books -->
 
         <!-- Recommeded borrowed books -->
-        <h4 class="recent-books">Recommended Books</h4>
+        <!-- <h4 class="recent-books">Recommended Books</h4>
         <section class="recents variable slider">
             <div class="shelve">
                 <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8Ym9va3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
@@ -294,8 +354,8 @@ if (!isset($_SESSION['user'])) {
                     alt="" class="shelve-img">
             </div>
         </section>
-        <!-- end recent books -->
-    </section>
+        end recent books -->
+    <!-- </section> --> 
 
 
 

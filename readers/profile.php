@@ -6,7 +6,7 @@ require('db_connection.php');
 
 session_start();
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['id'])) {
     header("location: index.html");
 }
 ?>
@@ -32,12 +32,19 @@ if (!isset($_SESSION['user'])) {
             <header>
                 <div class="image-text">
                     <span class="image">
-                        <img src="logo.png" alt="">
+                        <img src="./dashboard/logo.png" alt="">
                     </span>
 
                     <div class="text logo-text">
                         <span class="name">Book-lab</span>
-                        <?php echo " <span>@".$_SESSION['user']."</span>" ?>
+                        <?php 
+                        $sessionId= $_SESSION['id'];
+                        $getUser = "select * from Users where id ='$sessionId'";
+                        $result=$connection->query($getUser);
+                        $row=$result->fetch_assoc();
+                        $username= $row['user_name'];
+                        ?>
+                        <?php echo " <span>@".$username."</span>" ?>
                     </div>
                 </div>
 
@@ -54,12 +61,12 @@ if (!isset($_SESSION['user'])) {
                         </form>
                     </li>
                     <ul class="menu-links">
-                        <li class="nav-link" title="dashboard">
-                            <a href="dashboard.php">
+                        <!-- <li class="nav-link" title="dashboard">
+                            <a href="./dashboard.php">
                                 <i class='bx bx-home-alt bx-tada-hover icon'></i>
                                 <span class="text nav-text">Dashboard</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="nav-link" title="all books">
                             <a href="./dashboard.php">
@@ -68,7 +75,7 @@ if (!isset($_SESSION['user'])) {
                             </a>
                         </li>
 
-                        <li class="nav-link" title="current books">
+                        <!-- <li class="nav-link" title="current books">
                             <a href="#">
                                 <i class='bx bx-book-open bx-tada-hover icon'></i>
                                 <span class="text nav-text">Current Books</span>
@@ -85,7 +92,7 @@ if (!isset($_SESSION['user'])) {
                                 <i class='bx bx-bell bx-tada-hover icon'></i>
                                 <span class="text nav-text">Notifications</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="nav-link" title="profile">
                             <a href="./profile.php">
@@ -124,19 +131,15 @@ if (!isset($_SESSION['user'])) {
             <!-- <div class="text">Dashboard</div> -->
             <div class="profile-card">
             <?php
-                                $username = $_SESSION['user'];
-                                $sql="select * from Safari_final_project.Users where user_name='$username'";
-                                $result=$connection->query($sql);
+                                $sessionId = $_SESSION['id'];
+                                $getUser = "select * from Users where id ='$sessionId'";
+                                $result=$connection->query($getUser);
                                 $row=$result->fetch_assoc();
-
+                                $username= $row['user_name'];
                                 $id=$row['id'];
                                 $email=$row['user_email'];
                                 $pswd=$row['user_password'];
                                 $picture= $row['pic'];
-                                // $pictureQuery="select * from Safari_final_project.profile_picture where user_id='$id'";
-                                // $resultPic=$connection->query($pictureQuery);
-                                // $rowPic=$resultPic->fetch_assoc();
-                                // $picture = $rowPic['user_picture'];
                                 ?> 
             
                 <!-- The background element  -->
@@ -156,7 +159,7 @@ if (!isset($_SESSION['user'])) {
                                 echo '<img src="./assets/images/profile.jpg" alt="">';
                         }else{
 
-                            echo '<img src = "data:image/png;base64,' . base64_encode($picture) . '" width = "50px" height = "50px"/>';
+                            echo '<img src = "data:image/png;base64,' . base64_encode($row['pic']) . '" width = "50px" height = "50px"/>';
                         }
 
                         ?> 
@@ -165,14 +168,12 @@ if (!isset($_SESSION['user'])) {
                     <!-- Basic information  -->
                     <div class="user-name"><?php echo $username ?> </div>
                     <div class="email"><?php echo $email ?></div>
-                    <?php echo $id ?>
+                    
 
 
                     <!-- Edit button  -->
                     <div class="buttons">
-                        
-                        <a href="./edit.php?id=<?php echo $id ?>"><button name="edit">Edit Profile</button></a>
-                    
+                        <a href="./edit.php?id=<?php echo $id ?>"><button class="edify" name="edit">Edit Profile</button></a>
                     </div>
                 </div>
 

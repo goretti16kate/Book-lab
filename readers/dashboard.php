@@ -6,7 +6,7 @@ require('db_connection.php');
 
 session_start();
 
-if (!isset($_SESSION['user'])) {
+if (!isset($_SESSION['id'])) {
     header("location: index.html");
 }
 ?>
@@ -43,12 +43,19 @@ if (!isset($_SESSION['user'])) {
             <header>
                 <div class="image-text">
                     <span class="image">
-                        <img src="logo.png" alt="">
+                        <img src="./dashboard/logo.png" alt="">
                     </span>
 
                     <div class="text logo-text">
                         <span class="name">Book-lab</span>
-                        <?php echo " <span>@".$_SESSION['user']."</span>" ?>
+                        <?php 
+                        $sessionId= $_SESSION['id'];
+                        $getUser = "select * from Users where id ='$sessionId'";
+                        $result=$connection->query($getUser);
+                        $row=$result->fetch_assoc();
+                        $username= $row['user_name'];
+                        ?>
+                        <?php echo " <span>@".$username."</span>" ?>
                     </div>
                 </div>
 
@@ -65,21 +72,21 @@ if (!isset($_SESSION['user'])) {
                         </form>
                     </li>
                     <ul class="menu-links">
-                        <li class="nav-link" title="dashboard">
+                        <!-- <li class="nav-link" title="dashboard">
                             <a href="dashboard.php">
                                 <i class='bx bx-home-alt bx-tada-hover icon'></i>
                                 <span class="text nav-text">Dashboard</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="nav-link" title="all books">
-                            <a href="#">
+                            <a href="./dashboard.php">
                                 <i class='bx bx-book-content bx-tada-hover icon'></i>
                                 <span class="text nav-text">All Books</span>
                             </a>
                         </li>
 
-                        <li class="nav-link" title="current books">
+                        <!-- <li class="nav-link" title="current books">
                             <a href="#">
                                 <i class='bx bx-book-open bx-tada-hover icon'></i>
                                 <span class="text nav-text">Current Books</span>
@@ -96,7 +103,7 @@ if (!isset($_SESSION['user'])) {
                                 <i class='bx bx-bell bx-tada-hover icon'></i>
                                 <span class="text nav-text">Notifications</span>
                             </a>
-                        </li>
+                        </li> -->
 
                         <li class="nav-link" title="profile">
                             <a href="./profile.php">
@@ -265,68 +272,18 @@ if (!isset($_SESSION['user'])) {
        </a>
 
         <!-- recent books -->
-        <h4 class="recent-books">Downloaded Books</h4>
-        <section class="recents variable slider">
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8Ym9va3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1558901357-ca41e027e43a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1495640388908-05fa85288e61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-        </section>
+
         <!-- end recent books -->
 
         <!-- previously borrowed books -->
         <h4 class="recent-books">Previously Borrowed Books</h4>
-        <section class="recents variable slider">
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1558901357-ca41e027e43a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8Ym9va3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1495640388908-05fa85288e61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-        </section>
+
         <!-- end recent books -->
 
         <!-- Recommeded borrowed books -->
         <h4 class="recent-books">Recommended Books</h4>
         <section class="recents variable slider">
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8Ym9va3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1495640388908-05fa85288e61?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1558901357-ca41e027e43a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
-            <div class="shelve">
-                <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTV8fGJvb2t8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-                    alt="" class="shelve-img">
-            </div>
+
         </section>
         <!-- end recent books -->
     </section>
