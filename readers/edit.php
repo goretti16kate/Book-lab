@@ -150,10 +150,7 @@ if (!isset($_SESSION['id'])) {
                         if($_SERVER['REQUEST_METHOD']=='POST'){
                             $image = $_FILES['image']['tmp_name'];
                             $img = file_get_contents($image);
-                            // $con = mysqli_connect('localhost','root','','Safari_final_project') or die('Unable To connect');
-                            // $sql = "insert into User (pic) values(?)";
                             $sql= "UPDATE `Users` SET `pic`= ? WHERE id = ?";
-                            // INSERT INTO `image`(`id`, `image`) VALUES ('[value-1]','[value-2]')
 
                             $stmt = mysqli_prepare($connection,$sql);
 
